@@ -7,6 +7,6 @@ import express from "express"
 
 const router = express.Router()
 
-router.route("/users").get(getUsers).post(createUser)
+router.route("/").get(getUsers).post(createUser)
 
 export default router

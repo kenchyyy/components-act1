@@ -3,6 +3,7 @@ dotenv.config()
 import express from "express"
 import cors from "cors"
 import UserRoutes from "./routes/userRoutes"
+import EmployeeRoutes from "./routes/employeeRoutes"
 const app = express()
 
 app.use(cors())
@@ -10,7 +11,8 @@ app.use(express.json())
 
 const PORT = process.env.PORT || 3009 
 
-app.use("/", UserRoutes)
+app.use("/users", UserRoutes)
+app.use("/employees", EmployeeRoutes)
 
 const start = async (): Promise<void> => {
     try {
