@@ -45,7 +45,7 @@ export const ApplicantForm: React.FC<ApplicantFormProps> = ({
         expectedDateOfDefense: "",
       });
     }
-  };;
+  };
   return (
     <div className='w-full max-w-sm justify-self-center'>
       <form className='max-w-sm mx-auto' onSubmit={handleSubmit}>
@@ -156,8 +156,26 @@ export const ApplicantForm: React.FC<ApplicantFormProps> = ({
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
             type='submit'
           >
-            Submit
+            {label}
           </button>
+          {initialData && (
+            <button
+              className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+              type='button'
+              onClick={() => {
+                setFormData({
+                  firstName: "",
+                  lastName: "",
+                  groupName: "",
+                  role: "",
+                  expectedSalary: 0,
+                  expectedDateOfDefense: "",
+                });
+              }}
+            >
+              Cancel
+            </button>
+          )}
         </div>
       </form>
     </div>

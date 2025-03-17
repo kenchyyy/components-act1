@@ -1,6 +1,7 @@
 // import { ActionButton } from "./components/ActionButton";
 // import { useGetUsers } from "./services/queries/userQueries";
 import React from "react";
+import { Applicant } from "./types/Applicant";
 import { EmployeeTable } from "./components/EmployeeTable";
 import { useGetEmployees } from "./services/queries/employeeQueries";
 import { ApplicantForm } from "./components/ApplicantForm";
@@ -11,25 +12,41 @@ import {
 } from "./services/mutations/applicantmutations";
 import { useGetApplicants } from "./services/queries/applicantQueries";
 
+
 function App() {
   // const { userData } = useGetUsers();
   // const { data, isSuccess } = useGetEmployees();
   const createApplicant = useCreateApplicant();
   const updateApplicant = useUpdateApplicant();
   const deleteApplicant = useDeleteApplicant();
-  const [editingApplicant, setEditingApplicant] = React.useState(null);
+  const [editingApplicant, setEditingApplicant] =
+    React.useState<Applicant | null>(null);
 
   const handleClick = () => {
     console.log("I have been cliqued");
   };
-
   const handleSubmit = (applicant) => {
-    console.log("Clicked");
-    createApplicant.mutate(applicant);
+    console.log("Submitting applicant", applicant);
+    if (editingApplicant) {
+      updateApplicant.mutate({ ...applicant, id: editingApplicant.id });
+      setEditingApplicant(null);
+    } else {
+      const { id, ...newApplicant } = applicant;
+      createApplicant.mutate(applicant);
+    }
+    setFormData({
+      firstName: "",
+      lastName: "",
+      groupName: "",
+      role: "",
+      expectedSalary: 0,
+      expectedDateOfDefense: "",
+    });
+  };
   };
 
   const handleEdit = (applicant) => {
-    setEditingApplicant(applicant); // Set the applicant to edit
+    setEditingApplicant(applicant);
   };
 
   const { data: applicants, isSuccess } = useGetApplicants();
@@ -54,7 +71,11 @@ function App() {
     //   )}
     // </div>
     <div className='flex gap-10 items-center w-screen justify-center'>
-      <ApplicantForm onSubmit={handleSubmit} label='Submit' />
+      <ApplicantForm
+        onSubmit={handleSubmit}
+        label={editingApplicant ? "Edit Applicant" : "Submit"}
+        initialData={editingApplicant}
+      />
       <div className='mt-8'>
         <h2 className='text-xl font-bold text-center mb-4'>
           Submitted Applicants
@@ -72,7 +93,10 @@ function App() {
           </thead>
           <tbody>
             {applicants?.map((applicant) => (
-              <tr key={applicant.id} className='in-read-only:not-last:'>
+              <tr
+                key={applicant.id}
+                className='hover:bg-amber-900-50 bg-transparent'
+              >
                 <td className='py-2 px-4 border-b'>
                   {applicant.firstName} {applicant.lastName}
                 </td>
@@ -86,10 +110,16 @@ function App() {
                 </td>
                 <td className='py-2 px-4 border-b'>
                   <button
-                    className='bg-blue-500 text-black px-2 py-1 rounded hover:bg-blue-600'
+                    className='bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mr-2'
                     onClick={() => handleEdit(applicant)}
                   >
                     Edit
+                  </button>
+                  <button
+                    className='bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'
+                    onClick={() => applicant.id !== undefined && deleteApplicant.mutate(applicant.id)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>

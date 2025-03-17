@@ -32,7 +32,7 @@ export const addApplicant = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
-    const {id, firstName, lastName, groupName, role, expectedSalary, expectedDateOfDefense} = req.body
+    const {firstName, lastName, groupName, role, expectedSalary, expectedDateOfDefense} = req.body
     try {
       const employee = await prisma.applicant.create({data: {firstName, lastName, groupName, role, expectedSalary, expectedDateOfDefense}})
       res.json(employee)

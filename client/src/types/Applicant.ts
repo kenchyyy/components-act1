@@ -1,5 +1,5 @@
 export type Applicant = {
-    id: number
+    id?: number
     firstName: string
     lastName: string
     groupName: string
