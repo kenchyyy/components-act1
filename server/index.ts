@@ -5,6 +5,7 @@ import cors from "cors"
 import UserRoutes from "./routes/userRoutes"
 import EmployeeRoutes from "./routes/employeeRoutes"
 import ApplicantRoutes from "./routes/applicant"
+import TaskRoutes from "./routes/taskRoutes"
 const app = express()
 
 app.use(cors())
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 3009
 app.use("/users", UserRoutes)
 app.use("/employees", EmployeeRoutes)
 app.use("/applicant", ApplicantRoutes)
+app.use("/tasks", TaskRoutes)
 
 const start = async (): Promise<void> => {
     try {

@@ -28,3 +28,29 @@ model Applicant {
   expectedSalary        Int
   expectedDateOfDefense String
 }
+
+model Task {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?
+  dueDate     DateTime?
+  completed   Boolean       @default(false)
+  type        TaskType      @default(BASIC)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  items       ChecklistItem[]
+}
+
+model ChecklistItem {
+  id        Int      @id @default(autoincrement())
+  text      String
+  completed Boolean  @default(false)
+  taskId    Int
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+enum TaskType {
+  BASIC
+  TIMED
+  CHECKLIST
+}
